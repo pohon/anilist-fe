@@ -8,6 +8,12 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
       perPage
     }
     media (id: $id, search: $search) {
+      coverImage {
+        extraLarge
+        large
+        medium
+        color
+      }
       id
       title {
         romaji

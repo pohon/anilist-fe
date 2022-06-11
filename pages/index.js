@@ -1,38 +1,73 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import ClientOnly from "../components/ClientOnly";
-import List from "../components/List";
+import { useQuery } from "@apollo/client"
+import { useState } from "react";
+import Layout from "../components/Layout";
+import Pagination from "../components/pagination";
+import SkeletonLoader from "../components/SkeletonLoader";
+import PAGE_QUERY from "../queries/page.graphql"
+
+const DEFAULT_SIZE = 10;
 
 export default function Home() {
+
+  // states
+  const [variables, setVariables] = useState({
+    'page': 1,
+    'perPage': DEFAULT_SIZE
+  });
+  const { data, loading, error } = useQuery(PAGE_QUERY, { variables });
+
+  // handlers
+  const handlePageChange = newOffset => {
+    setVariables(curr => ({
+      ...curr,
+      page: newOffset / curr.perPage + 1
+    }))
+  }
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout>
+      <div className="max-w-7xl mx-auto pt-6 pb-12 sm:px-6 lg:px-8">
+        <div className="bg-white">
+          <div className="max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 
-      <main className={styles.main}>
-        <h1 className={styles.title}><a href="#welcome-to-next-js" aria-hidden="true" className="aal_anchor" id="welcome-to-next-js"><svg aria-hidden="true" className="aal_svg" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        <ClientOnly>
-          <List />
-        </ClientOnly>
-      </main>
+            <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
+              {
+                loading ? (
+                  Array.from(Array(variables.perPage), (e, idx) => (
+                    <SkeletonLoader key={`list-skeleton-${idx}`} />
+                  ))
+                ) :
+                  data?.Page?.media?.map((media) => (
+                    <a key={media.id} className="group relative">
+                      <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                        <img
+                          src={media.coverImage?.large}
+                          alt={media.title?.romaji}
+                          className="w-full h-72 object-center object-cover group-hover:opacity-75"
+                        />
+                      </div>
+                      <h3 className="mt-4 text-sm text-gray-700">{media.title?.romaji}</h3>
+                    </a>
+                  ))
+              }
+
+            </div>
+          </div>
+        </div>
+
+        {
+          !loading && !error && (
+            <Pagination
+              count={data?.Page?.pageInfo?.total || 0}
+              limit={variables.perPage}
+              offset={variables.perPage * (variables.page - 1)}
+              onChange={handlePageChange}
+            />
+          )
+        }
+
+      </div>
+    </Layout>
   );
 }
