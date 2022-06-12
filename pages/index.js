@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { useState } from "react";
+import GridItem from "../components/GridItem";
 import Layout from "../components/Layout";
 import Pagination from "../components/pagination";
 import SkeletonLoader from "../components/SkeletonLoader";
@@ -35,20 +36,11 @@ export default function Home() {
               {
                 loading ? (
                   Array.from(Array(variables.perPage), (e, idx) => (
-                    <SkeletonLoader key={`list-skeleton-${idx}`} />
+                    <SkeletonLoader key={`skeleton-loader-${idx}`} />
                   ))
                 ) :
                   data?.Page?.media?.map((media) => (
-                    <a key={media.id} className="group relative">
-                      <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                        <img
-                          src={media.coverImage?.large}
-                          alt={media.title?.romaji}
-                          className="w-full h-72 object-center object-cover group-hover:opacity-75"
-                        />
-                      </div>
-                      <h3 className="mt-4 text-sm text-gray-700">{media.title?.romaji}</h3>
-                    </a>
+                    <GridItem key={media.id} media={media} />
                   ))
               }
 
