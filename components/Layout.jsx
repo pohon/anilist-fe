@@ -1,10 +1,10 @@
 import Footer from "./Footer";
 import Header from "./Header";
 
-export default function Home({ children }) {
+export default function Home({ children, isHome }) {
   return (
     <>
-      <Header />
+      <Header isHome={isHome} />
       <main>{children}</main>
       <Footer />
     </>

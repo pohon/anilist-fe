@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client"
-import { useState } from "react";
-import GridItem from "../components/GridItem";
-import Layout from "../components/Layout";
-import Pagination from "../components/pagination";
-import SkeletonLoader from "../components/SkeletonLoader";
+import { useState } from "react"
+import GridItem from "../components/GridItem"
+import Layout from "../components/Layout"
+import Pagination from "../components/pagination"
+import SkeletonLoader from "../components/SkeletonLoader"
 import PAGE_QUERY from "../queries/page.graphql"
 
-const DEFAULT_SIZE = 10;
+const DEFAULT_SIZE = 10
 
 export default function Home() {
 
@@ -14,8 +14,8 @@ export default function Home() {
   const [variables, setVariables] = useState({
     'page': 1,
     'perPage': DEFAULT_SIZE
-  });
-  const { data, loading, error } = useQuery(PAGE_QUERY, { variables });
+  })
+  const { data, loading, error } = useQuery(PAGE_QUERY, { variables })
 
   // handlers
   const handlePageChange = newOffset => {
@@ -26,7 +26,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
+    <Layout isHome>
       <div className="max-w-7xl mx-auto pt-6 pb-12 sm:px-6 lg:px-8">
         <div className="bg-white">
           <div className="max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -61,5 +61,5 @@ export default function Home() {
 
       </div>
     </Layout>
-  );
+  )
 }
