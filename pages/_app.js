@@ -1,6 +1,9 @@
 import { ApolloProvider } from "@apollo/client"
 import { useEffect, useState } from "react"
+import { useRouter } from 'next/router'
 import client from "../apollo-client"
+import Footer from "../components/Footer"
+import Header from "../components/Header"
 import Toast, { ToastContext } from "../components/Toast"
 import '../styles/globals.css'
 
@@ -10,6 +13,8 @@ const DEFAULT_TOAST_STATE = {
 }
 
 function MyApp({ Component, pageProps }) {
+
+  const isHome = useRouter()?.pathname === '/';
 
   // states
   const [toast, showToast] = useState({ ...DEFAULT_TOAST_STATE })
@@ -23,7 +28,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <ToastContext.Provider value={{ showToast }}>
-        <Component {...pageProps} />
+        <Header isHome={isHome} />
+        <main>
+          <Component {...pageProps} />
+        </main>
+        <Footer />
       </ToastContext.Provider>
       <Toast
         message={toast['message']}

@@ -1,9 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import { useContext } from "react"
 import { useQuery } from "@apollo/client"
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import MEDIA_QUERY from "../../queries/media.graphql"
-import Layout from '../../components/Layout'
 import ClientOnly from '../../components/ClientOnly'
 import { ToastContext } from "../../components/Toast"
 import useToggle from '../../hooks/useToggle'
@@ -13,10 +13,12 @@ import getLocalCollections from "../../utils/getLocalCollections"
 
 export default function AnimeDetail() {
 
+  // local storage
   const userCollections = getLocalCollections();
 
   // path param
   const { id } = useRouter().query
+  const includedCollections = userCollections?.filter(collection => collection['animeIds'].includes(id)) || []
 
   // contexes
   const { showToast } = useContext(ToastContext)
@@ -51,7 +53,7 @@ export default function AnimeDetail() {
   }
 
   return (
-    <Layout>
+    <>
       <div className="bg-white">
 
         {/* Image gallery */}
@@ -152,12 +154,15 @@ export default function AnimeDetail() {
                 </ul>
               </div>
             </div>
-
+            
+            {
+              
+            }
             <div className="mt-10">
               <h3 className="text-sm font-medium text-gray-900">Added to these collection</h3>
               <ul className="mt-4 flex flex-wrap">
                 {
-                  userCollections?.filter(collection => collection['animeIds'].includes(id))?.map(collection => (
+                  includedCollections?.map(collection => (
                     <li
                       className="cursor-pointer border-2 px-3 py-2 rounded-3xl border-sky-600 text-sm mr-3 mb-3"
                       key={collection['id']}
@@ -185,7 +190,7 @@ export default function AnimeDetail() {
           setOpen={toggleOpenCreateCollectionModal}
         />
       </ClientOnly>
-    </Layout>
+    </>
   )
 
 }
