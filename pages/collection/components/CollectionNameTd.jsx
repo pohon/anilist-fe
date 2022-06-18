@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useQuery } from "@apollo/client"
-import { ExclamationIcon } from '@heroicons/react/outline'
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline'
 import MEDIA_QUERY from "../../../queries/media.graphql"
 
 export default function CollectionNameTd({ collection }) {
@@ -23,7 +23,7 @@ export default function CollectionNameTd({ collection }) {
             />
           ) : (
             <div className="bg-gray-100 mx-auto flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-              <ExclamationIcon className="text-gray-600 h-6 w-6" aria-hidden="true" />
+                <QuestionMarkCircleIcon className="text-gray-600 h-6 w-6" aria-hidden="true" />
             </div>
           )
         }

@@ -3,7 +3,7 @@ import { ViewGridAddIcon } from '@heroicons/react/outline'
 import Modal from "./Modal"
 import getLocalCollections from '../utils/getLocalCollections'
 
-export default function ModalCreateCollection({ open, setOpen }) {
+export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
 
   // states
   const [inputValue, setInputValue] = useState('')
@@ -46,6 +46,12 @@ export default function ModalCreateCollection({ open, setOpen }) {
 
     // close modal
     setOpen()
+
+    // call parent
+    onSuccess()
+
+    // reset states
+    setInputValue('')
   }
   const handleInputChange = evt => {
     setInputValue(evt.target.value)
