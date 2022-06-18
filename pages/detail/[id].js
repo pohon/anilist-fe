@@ -1,25 +1,49 @@
-import { useEffect, useState } from 'react'
+import { useContext } from "react"
 import { useQuery } from "@apollo/client"
 import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
 import MEDIA_QUERY from "../../queries/media.graphql"
-import Modal from '../../components/Modal'
+import Layout from '../../components/Layout'
+import ClientOnly from '../../components/ClientOnly'
+import { ToastContext } from "../../components/Toast"
+import useToggle from '../../hooks/useToggle'
+import ModalCreateCollection from "../../components/ModalCreateCollection"
+import ModalAddToCollection from "../../components/ModalAddToCollection"
 
 export default function AnimeDetail() {
 
   // path param
   const { id } = useRouter().query
 
-  // states
-  const [variables, setVariables] = useState({ id })
-  const [openCollectModal, setOpenCollectModal] = useState(true)
-  const { data } = useQuery(MEDIA_QUERY, { variables, skip: !variables.id })
+  const { showToast } = useContext(ToastContext)
 
-  useEffect(() => {
-    if (id !== variables.id) {
-      setVariables({ id })
+  // states
+  const [openCollectModal, toggleOpenCollectModal] = useToggle(false)
+  const [openCreateCollectionModal, toggleOpenCreateCollectionModal] = useToggle(false);
+  const { data } = useQuery(MEDIA_QUERY, { variables: { id }, skip: !id })
+
+  const handleConfirmCollect = checkedCollectionIds => {
+    const newCollections = JSON.parse(localStorage.getItem('MY_ANI_COLLECTION')) || []
+
+    for (let i = 0; i < newCollections.length; i++) {
+
+      const collection = newCollections[i];
+      if (checkedCollectionIds.includes(collection['id'])) {
+
+        // anime doesn't exist in collection --> add anime
+        if (!newCollections[i]?.['animeIds']?.includes(id)) {
+          newCollections[i]?.['animeIds']?.push(id)
+        }
+      }
     }
-  }, [id])
+
+    localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))
+
+    // close modal
+    toggleOpenCollectModal()
+
+    // show toast
+    showToast({ message: 'Anime added to collection' })
+  }
 
   return (
     <Layout>
@@ -97,6 +121,7 @@ export default function AnimeDetail() {
 
             <button
               className="mt-10 w-full bg-sky-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+              onClick={toggleOpenCollectModal}
             >
               Add to Collection
             </button>
@@ -130,10 +155,18 @@ export default function AnimeDetail() {
           </div>
         </div>
       </div>
-      <Modal
-        open={openCollectModal}
-        setOpen={setOpenCollectModal}
-      />
+      <ClientOnly>
+        <ModalAddToCollection
+          onConfirmCollect={handleConfirmCollect}
+          onToggleCreateNewCollection={toggleOpenCreateCollectionModal}
+          open={openCollectModal}
+          setOpen={toggleOpenCollectModal}
+        />
+        <ModalCreateCollection
+          open={openCreateCollectionModal}
+          setOpen={toggleOpenCreateCollectionModal}
+        />
+      </ClientOnly>
     </Layout>
   )
 
