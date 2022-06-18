@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ViewGridAddIcon } from '@heroicons/react/outline'
 import Modal from "./Modal"
+import getLocalCollections from '../utils/getLocalCollections'
 
 export default function ModalCreateCollection({ open, setOpen }) {
 
@@ -17,7 +18,7 @@ export default function ModalCreateCollection({ open, setOpen }) {
       return
     }
 
-    const currentCollections = JSON.parse(localStorage.getItem('MY_ANI_COLLECTION')) || []
+    const currentCollections = getLocalCollections()
     const isNameDuplicate = currentCollections.findIndex(o => o?.['name'] === inputValue) > -1
     const isNonAlphanumeric = /[^a-zA-Z0-9 ]/.test(inputValue)
 

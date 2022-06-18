@@ -1,4 +1,4 @@
-export default (currentPage, totalPage) => {
+export default function paginationGenerator (currentPage, totalPage) {
   var current = currentPage,
     last = totalPage,
     delta = 2,

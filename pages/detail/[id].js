@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { useQuery } from "@apollo/client"
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import MEDIA_QUERY from "../../queries/media.graphql"
 import Layout from '../../components/Layout'
 import ClientOnly from '../../components/ClientOnly'
@@ -8,12 +9,16 @@ import { ToastContext } from "../../components/Toast"
 import useToggle from '../../hooks/useToggle'
 import ModalCreateCollection from "../../components/ModalCreateCollection"
 import ModalAddToCollection from "../../components/ModalAddToCollection"
+import getLocalCollections from "../../utils/getLocalCollections"
 
 export default function AnimeDetail() {
+
+  const userCollections = getLocalCollections();
 
   // path param
   const { id } = useRouter().query
 
+  // contexes
   const { showToast } = useContext(ToastContext)
 
   // states
@@ -22,7 +27,7 @@ export default function AnimeDetail() {
   const { data } = useQuery(MEDIA_QUERY, { variables: { id }, skip: !id })
 
   const handleConfirmCollect = checkedCollectionIds => {
-    const newCollections = JSON.parse(localStorage.getItem('MY_ANI_COLLECTION')) || []
+    const newCollections = getLocalCollections()
 
     for (let i = 0; i < newCollections.length; i++) {
 
@@ -128,12 +133,8 @@ export default function AnimeDetail() {
           </div>
 
           <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            {/* Description and details */}
-            <div>
-
-              <div className="space-y-6">
-                <p dangerouslySetInnerHTML={{ __html: data?.Media?.description }} className="text-base text-gray-900" />
-              </div>
+            <div className="space-y-6">
+              <p dangerouslySetInnerHTML={{ __html: data?.Media?.description }} className="text-base text-gray-900" />
             </div>
 
             <div className="mt-10">
@@ -151,6 +152,23 @@ export default function AnimeDetail() {
                 </ul>
               </div>
             </div>
+
+            <div className="mt-10">
+              <h3 className="text-sm font-medium text-gray-900">Added to these collection</h3>
+              <ul className="mt-4 flex flex-wrap">
+                {
+                  userCollections?.filter(collection => collection['animeIds'].includes(id))?.map(collection => (
+                    <li
+                      className="cursor-pointer border-2 px-3 py-2 rounded-3xl border-sky-600 text-sm mr-3 mb-3"
+                      key={collection['id']}
+                    >
+                      <Link href={`/collection/${collection['id']}`}>{collection['name']}</Link>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
 
           </div>
         </div>

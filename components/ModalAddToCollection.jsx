@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DocumentAddIcon, ExclamationIcon, ViewGridAddIcon } from '@heroicons/react/outline'
 import Modal from "./Modal";
+import getLocalCollections from '../utils/getLocalCollections';
 
 const DEFAULT_CHECKED_COLLECTION_IDS = []
 
@@ -12,7 +13,7 @@ export default function ModalAddToCollection({
 }) {
 
   // local storage
-  const currentCollections = JSON.parse(localStorage.getItem('MY_ANI_COLLECTION')) || [];
+  const currentCollections = getLocalCollections()
   const isCollectionEmpty = currentCollections.length === 0;
 
   // states
