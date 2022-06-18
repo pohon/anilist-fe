@@ -1,7 +1,10 @@
+import Link from "next/link"
 import getLocalCollections from "../../utils/getLocalCollections"
 import ClientOnly from '../../components/ClientOnly'
-import CollectionNameTd from "./components/CollectionNameTd";
-import Link from "next/link";
+import CollectionNameTd from "./components/CollectionNameTd"
+import RemoveCollectionModal from "./components/RemoveCollectionModal"
+import { useContext, useState } from "react"
+import { ToastContext } from '../../components/Toast'
 
 export const columns = [{
   header: 'No',
@@ -19,8 +22,31 @@ export const columns = [{
 
 export default function CollectionList() {
 
+  // contexes
+  const { showToast } = useContext(ToastContext)
+
   // local storage
-  const myCollections = getLocalCollections();
+  const myCollections = getLocalCollections()
+
+  // states
+  const [toBeRemovedCollection, setToBeRemovedCollection] = useState({})
+
+  // handlers
+  const handleToggleRemove = collection => evt => {
+    evt.stopPropagation()
+    setToBeRemovedCollection({ ...collection })
+  }
+  const handleConfirmRemove = () => {
+    const currentCollections = getLocalCollections()
+
+    const newCollections = currentCollections.filter(collection => collection['id'] !== toBeRemovedCollection['id'])
+
+    localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))
+
+    setToBeRemovedCollection({})
+
+    showToast({ message: 'Collection successfully deleted' });
+  }
 
   return (
     <div className="bg-gray-50 h-screen">
@@ -40,60 +66,60 @@ export default function CollectionList() {
         </div>
       </div>
 
-
-      <div className="flex flex-col max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-
-              <ClientOnly>
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      {
-                        columns.map((col, idx) =>
-                          <th
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            key={`th-${idx}`}
-                            scope="col"
-                          >
-                            {col['header']}
-                          </th>
-                        )
-                      }
+      <div className="flex flex-col max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <ClientOnly>
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                {
+                  columns.map((col, idx) =>
+                    <th
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      key={`th-${idx}`}
+                      scope="col"
+                    >
+                      {col['header']}
+                    </th>
+                  )
+                }
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {
+                myCollections.map((collection, rowIndex) => (
+                  <Link key={`tr-${rowIndex}`} href={`/collection/${collection.id}`}>
+                    <tr className="hover:bg-sky-100 cursor-pointer">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {rowIndex + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <CollectionNameTd collection={collection} />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{new Date(parseFloat(collection.id)).toDateString()}</div>
+                        <div className="text-sm text-gray-500">{new Date(parseFloat(collection.id)).toTimeString()}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={handleToggleRemove(collection)}
+                          className="text-red-600 hover:text-red-900 cursor-pointer text-sm font-medium">
+                          Remove
+                        </button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {
-                      myCollections.map((collection, rowIndex) => (
-                        <Link key={`tr-${rowIndex}`} href={`/collection/${collection.id}`}>
-                          <tr className="hover:bg-sky-100 cursor-pointer">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              {rowIndex + 1}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <CollectionNameTd collection={collection} />
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{new Date(parseFloat(collection.id)).toDateString()}</div>
-                              <div className="text-sm text-gray-500">{new Date(parseFloat(collection.id)).toTimeString()}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <button onClick={e => { e.stopPropagation(); alert('hei') }} className="text-red-600 hover:text-red-900 cursor-pointer">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        </Link>
-                      ))
-                    }
-                  </tbody>
-                </table>
-              </ClientOnly>
-            </div>
-          </div>
-        </div>
+                  </Link>
+                ))
+              }
+            </tbody>
+          </table>
+        </ClientOnly>
       </div>
+
+      <RemoveCollectionModal
+        collection={toBeRemovedCollection}
+        onConfirm={handleConfirmRemove}
+        onClose={() => setToBeRemovedCollection({})}
+      />
     </div>
   )
 }
