@@ -68,7 +68,7 @@ export default function ModalAddToCollection({
           <div className="my-3 px-5">
             {
               currentCollections?.map(collection => (
-                <div key={collection?.id} className="flex items-center">
+                <div key={collection?.id} className="flex items-center mb-3">
                   <input
                     value={collection?.id}
                     type="checkbox"

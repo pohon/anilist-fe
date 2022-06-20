@@ -3,6 +3,7 @@ import { useContext } from "react"
 import { useQuery } from "@apollo/client"
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import cn from 'classnames';
 import MEDIA_QUERY from "../../queries/media.graphql"
 import ClientOnly from '../../components/ClientOnly'
 import { ToastContext } from "../../components/Toast"
@@ -81,7 +82,12 @@ export default function AnimeDetail() {
               />
             </div>
           </div>
-          <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
+          <div
+            className={cn("bg-gray-200 spect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4", {
+              'animate-pulse': !data?.Media?.coverImage?.extraLarge
+            })}
+            style={{ minHeight: '500px' }}
+          >
             <img
               src={data?.Media?.coverImage?.extraLarge}
               alt={data?.Media?.description}
@@ -154,26 +160,30 @@ export default function AnimeDetail() {
                 </ul>
               </div>
             </div>
-            
-            {
-              
-            }
-            <div className="mt-10">
-              <h3 className="text-sm font-medium text-gray-900">Added to these collection</h3>
-              <ul className="mt-4 flex flex-wrap">
-                {
-                  includedCollections?.map(collection => (
-                    <li
-                      className="cursor-pointer border-2 px-3 py-2 rounded-3xl border-sky-600 text-sm mr-3 mb-3"
-                      key={collection['id']}
-                    >
-                      <Link href={`/collection/${collection['id']}`}>{collection['name']}</Link>
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
 
+            {
+              includedCollections?.length > 0 ? (
+                <div className="mt-10">
+                  <h3 className="text-sm font-medium text-gray-900">Added to these collection</h3>
+                  <ul className="mt-4 flex flex-wrap">
+                    {
+                      includedCollections?.map(collection => (
+                        <li
+                          className="cursor-pointer border-2 px-3 py-2 rounded-3xl border-sky-600 text-sm mr-3 mb-3"
+                          key={collection['id']}
+                        >
+                          <Link href={`/collection/${collection['id']}`}>{collection['name']}</Link>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              ) : (
+                <div className="mt-10">
+                  <h3 className="text-sm font-medium text-gray-900">Not collected by any collections yet</h3>
+                </div>
+              )
+            }
 
           </div>
         </div>

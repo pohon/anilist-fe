@@ -17,7 +17,7 @@ export default function Header({ isHome }) {
     <>
       <Head>
         <title>Unofficial AniList app - Sullivan Osmond</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://anilist.co/img/icons/favicon-32x32.png" />
       </Head>
       <div className={isHome ? "relative bg-white overflow-hidden" : "sticky top-0 bg-white z-10"}>
         <div className="max-w-7xl mx-auto">
@@ -43,8 +43,7 @@ export default function Header({ isHome }) {
                 <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
                   <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                     <div className="flex items-center justify-between w-full md:w-auto">
-                      <a href="#">
-                        <span className="sr-only">Workflow</span>
+                      <Link href="/">
                         <Image
                           alt="anilist"
                           className="h-8 w-auto sm:h-10 rounded"
@@ -52,7 +51,7 @@ export default function Header({ isHome }) {
                           src="https://www.gitbook.com/cdn-cgi/image/width=40,height=40,fit=contain,dpr=2,format=auto/https%3A%2F%2F553834213-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-legacy-files%2Fo%2Fspaces%252F-LHizcWWtVphqU90YAXO%252Favatar.png%3Fgeneration%3D1531944291782256%26alt%3Dmedia"
                           width={40}
                         />
-                      </a>
+                      </Link>
                       <div className="-mr-2 flex items-center md:hidden">
                         <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500">
                           <span className="sr-only">Open main menu</span>
