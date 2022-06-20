@@ -22,6 +22,8 @@ export default function Home() {
       ...curr,
       page: newOffset / curr.perPage + 1
     }))
+
+    window && window.scrollTo(0, 750)
   }
 
   return (

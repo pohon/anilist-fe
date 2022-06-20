@@ -128,7 +128,7 @@ export default function Header({ isHome }) {
                       What are your highest rated genres or most watched anime and manga?
                       Discover and collect your favorite anime and manga with unofficial Anilist now.
                     </p>
-                    <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                    {/* <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                       <div className="rounded-md shadow">
                         <a
                           href="#"
@@ -146,7 +146,7 @@ export default function Header({ isHome }) {
                           Cancel
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )

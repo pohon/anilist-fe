@@ -63,7 +63,7 @@ export default function AnimeDetail() {
             <img
               src={data?.Media?.characterPreview?.edges?.[0]?.node?.image?.large}
               alt={data?.Media?.characterPreview?.edges?.[0]?.node?.name?.userPreferred}
-              className="w-full h-full object-center object-cover"
+              className="bg-gray-200 w-full h-full object-center object-cover"
             />
           </div>
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
@@ -71,14 +71,14 @@ export default function AnimeDetail() {
               <img
                 src={data?.Media?.characterPreview?.edges?.[1]?.node?.image?.large}
                 alt={data?.Media?.characterPreview?.edges?.[1]?.node?.name?.userPreferred}
-                className="w-full h-72 object-center object-cover"
+                className="bg-gray-200 w-full h-72 object-center object-cover"
               />
             </div>
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               <img
                 src={data?.Media?.characterPreview?.edges?.[2]?.node?.image?.large}
                 alt={data?.Media?.characterPreview?.edges?.[2]?.node?.name?.userPreferred}
-                className="w-full h-72 object-center object-cover"
+                className="bg-gray-200 w-full h-72 object-center object-cover"
               />
             </div>
           </div>
@@ -102,7 +102,11 @@ export default function AnimeDetail() {
           </div>
 
           <div className="mt-4 lg:mt-0 lg:row-span-3">
-            <p className="text-3xl text-gray-900">{data?.Media?.averageScore}%</p>
+            <p className="text-3xl text-gray-900">
+              {
+                data?.Media?.averageScore && `${data.Media.averageScore}%`
+              }
+            </p>
 
             <div className="mt-1">
               <div className="text-sm font-medium text-sky-600">
