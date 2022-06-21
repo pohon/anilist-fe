@@ -51,7 +51,7 @@ export default function Home() {
       {
         !loading && !error && (
           <Pagination
-            count={data?.Page?.pageInfo?.total || 0}
+            count={data?.Page?.pageInfo?.total}
             limit={variables.perPage}
             offset={variables.perPage * (variables.page - 1)}
             onChange={handlePageChange}
