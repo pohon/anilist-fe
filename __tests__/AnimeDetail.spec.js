@@ -1,22 +1,30 @@
-import { render, screen, waitFor, fireEvent, within } from '@testing-library/react'
+import { render, fireEvent, act } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import { useRouter } from 'next/router'
 import '@testing-library/jest-dom'
 import AnimeDetail from '../pages/detail/[id]'
 import { AppBody } from '../pages/_app'
-import mocks from '../__mocks__/[id]'
+import mocks from '../__mocks__/AnimeDetail'
 import getLocalCollections from '../utils/getLocalCollections'
 
-jest.mock('next/router');
+jest.mock('next/router')
 
 describe('AnimeDetail', () => {
+
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
 
   it('should collect anime correctly', async () => {
     useRouter.mockReturnValue({
       'query': { 'id': '1' }
     })
 
-    const { findByRole, findByText } = render(
+    const { findByRole, findByText, queryByText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <AppBody Component={AnimeDetail} />
       </MockedProvider >
@@ -65,5 +73,12 @@ describe('AnimeDetail', () => {
     }
     fireEvent.click(await findByText("Save"))
     expect(await findByText("Anime added to collection")).toBeInTheDocument()
+    expect(queryByText("Anime added to collection")).toBeTruthy()
+
+    // fast forward 2 seconds
+    act(() => {
+      jest.runAllTimers()
+    })
+    expect(queryByText("Anime added to collection")).toBeFalsy()
   })
 })

@@ -8,12 +8,10 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   collectCoverage: true,
   collectCoverageFrom: [
-    "components/*.{js,jsx}",
     "pages/*.{js,jsx}",
     "pages/**/*.{js,jsx}",
     "pages/**/**/*.{js,jsx}",
-    "pages/**/**/**/*.{js,jsx}",
-    "components/*.{js,jsx}"
+    "pages/**/**/**/*.{js,jsx}"
   ],
   coverageReporters: ['html', 'lcov'],
   coverageThreshold: {

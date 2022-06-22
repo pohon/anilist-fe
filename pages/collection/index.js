@@ -54,7 +54,7 @@ export default function CollectionList() {
   }
 
   return (
-    <div className="bg-gray-50 h-screen">
+    <div className="bg-gray-200 h-screen">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
           <span className="block">Collection List</span>
@@ -94,29 +94,35 @@ export default function CollectionList() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {
-                      myCollections.map((collection, rowIndex) => (
-                        <Link key={`tr-${rowIndex}`} href={`/collection/${collection.id}`}>
-                          <tr className="hover:bg-sky-100 cursor-pointer">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              {rowIndex + 1}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <CollectionNameTd collection={collection} />
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{new Date(parseFloat(collection.id)).toDateString()}</div>
-                              <div className="text-sm text-gray-500">{new Date(parseFloat(collection.id)).toTimeString()}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <button
-                                onClick={handleToggleRemove(collection)}
-                                className="text-red-600 hover:text-red-900 cursor-pointer text-sm font-medium">
-                                Remove
-                              </button>
-                            </td>
-                          </tr>
-                        </Link>
-                      ))
+                      myCollections?.length > 0 ? (
+                        myCollections.map((collection, rowIndex) => (
+                          <Link key={`tr-${rowIndex}`} href={`/collection/${collection.id}`}>
+                            <tr className="hover:bg-sky-100 cursor-pointer">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {rowIndex + 1}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <CollectionNameTd collection={collection} />
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{new Date(parseFloat(collection.id)).toDateString()}</div>
+                                <div className="text-sm text-gray-500">{new Date(parseFloat(collection.id)).toTimeString()}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <button
+                                  onClick={handleToggleRemove(collection)}
+                                  className="text-red-600 hover:text-red-900 cursor-pointer text-sm font-medium">
+                                  Remove
+                                </button>
+                              </td>
+                            </tr>
+                          </Link>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={4} className="px-6 py-3 text-center text-gray-800">No collection yet</td>
+                        </tr>
+                      )
                     }
                   </tbody>
                 </table>
