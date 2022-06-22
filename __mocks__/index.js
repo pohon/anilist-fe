@@ -1,4 +1,4 @@
-import PAGE_QUERY from '../../queries/page.graphql'
+import PAGE_QUERY from '../queries/page.graphql'
 
 const mocks = [
   {

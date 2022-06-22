@@ -1,4 +1,4 @@
-import MEDIA_QUERY from '../../../queries/media.graphql'
+import MEDIA_QUERY from '../queries/media.graphql'
 
 const mocks = [
   {

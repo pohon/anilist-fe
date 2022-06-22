@@ -2,10 +2,10 @@ import { render, screen, waitFor, fireEvent, within } from '@testing-library/rea
 import { MockedProvider } from '@apollo/client/testing'
 import { useRouter } from 'next/router'
 import '@testing-library/jest-dom'
-import AnimeDetail from '../[id]'
-import { AppBody } from '../../_app'
-import mocks from './[id].mocks'
-import getLocalCollections from '../../../utils/getLocalCollections'
+import AnimeDetail from '../pages/detail/[id]'
+import { AppBody } from '../pages/_app'
+import mocks from '../__mocks__/[id]'
+import getLocalCollections from '../utils/getLocalCollections'
 
 jest.mock('next/router');
 
