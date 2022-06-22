@@ -11,15 +11,9 @@ jest.mock('next/router')
 
 describe('AnimeDetail', () => {
 
-  beforeAll(() => {
-    jest.useFakeTimers()
-  })
-
-  afterAll(() => {
-    jest.useRealTimers()
-  })
-
   it('should collect anime correctly', async () => {
+    // mock
+    jest.useFakeTimers()
     useRouter.mockReturnValue({
       'query': { 'id': '1' }
     })
@@ -80,5 +74,9 @@ describe('AnimeDetail', () => {
       jest.runAllTimers()
     })
     expect(queryByText("Anime added to collection")).toBeFalsy()
+
+    // reset
+    jest.useRealTimers()
+    jest.resetAllMocks()
   })
 })

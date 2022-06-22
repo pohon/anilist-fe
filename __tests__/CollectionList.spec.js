@@ -1,10 +1,8 @@
-import { render, fireEvent, act, within } from '@testing-library/react'
+import { render, fireEvent, within } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import '@testing-library/jest-dom'
 import CollectionList from '../pages/collection/index'
 import { AppBody } from '../pages/_app'
-// import mocks from '../__mocks__/CollectionList'
-import getLocalCollections from '../utils/getLocalCollections'
 
 jest.mock('next/router')
 
