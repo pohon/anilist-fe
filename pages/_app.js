@@ -12,7 +12,7 @@ const DEFAULT_TOAST_STATE = {
   type: ''
 }
 
-function MyApp({ Component, pageProps }) {
+export const AppBody = ({ Component, pageProps }) => {
 
   const isHome = useRouter()?.pathname === '/';
 
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
   }, [toast.message]);
 
   return (
-    <ApolloProvider client={client}>
+    <>
       <ToastContext.Provider value={{ showToast }}>
         <Header isHome={isHome} />
         <main>
@@ -38,8 +38,17 @@ function MyApp({ Component, pageProps }) {
         message={toast['message']}
         type={toast['type']}
       />
-    </ApolloProvider>
+    </>
   )
 }
+
+const MyApp = ({ Component, pageProps }) => (
+  <ApolloProvider client={client}>
+    <AppBody
+      Component={Component}
+      pageProps={pageProps}
+    />
+  </ApolloProvider>
+)
 
 export default MyApp

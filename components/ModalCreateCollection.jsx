@@ -18,18 +18,18 @@ export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
       return
     }
 
-    const currentCollections = getLocalCollections()
-    const isNameDuplicate = currentCollections.findIndex(o => o?.['name'] === inputValue) > -1
     const isNonAlphanumeric = /[^a-zA-Z0-9 ]/.test(inputValue)
-
-    if (isNameDuplicate) {
-      setError('Collection name must be unique!')
+    if (isNonAlphanumeric) {
+      setError("Collection musn't contain special char!")
 
       return
     }
 
-    if (isNonAlphanumeric) {
-      setError("Collection musn't contain special char!")
+    const currentCollections = getLocalCollections()
+    const isNameDuplicate = currentCollections.findIndex(o => o?.['name'] === inputValue) > -1
+
+    if (isNameDuplicate) {
+      setError('Collection name must be unique!')
 
       return
     }
@@ -43,15 +43,15 @@ export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
       }]
 
     localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))
+    
+    // reset states
+    setInputValue('')
+
+    // call parent
+    onSuccess && onSuccess()
 
     // close modal
     setOpen()
-
-    // call parent
-    onSuccess()
-
-    // reset states
-    setInputValue('')
   }
   const handleInputChange = evt => {
     setInputValue(evt.target.value)

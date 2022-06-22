@@ -1,23 +1,28 @@
 const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './',
 })
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  // Add more setup options before each test is run
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
-  moduleDirectories: ['node_modules', '<rootDir>/'],
-  setupFilesAfterEnv: ['<rootDir>/setup-jest.js'],
-  testEnvironment: 'jest-environment-jsdom',
-  testPathIgnorePatterns: [
-    "<rootDir>/.next/",
-    "<rootDir>/node_modules/",
-    "<rootDir>/__tests__/__mocks__",
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "components/*.{js,jsx}",
+    "pages/*.{js,jsx}",
+    "pages/**/*.{js,jsx}",
+    "pages/**/**/*.{js,jsx}",
+    "pages/**/**/**/*.{js,jsx}",
+    "components/*.{js,jsx}"
   ],
+  coverageReporters: ['html', 'lcov'],
+  moduleDirectories: ['node_modules', '<rootDir>/'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/*.mocks.js'
+  ],
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
     "\\.(gql|graphql)$": "jest-transform-graphql",
     ".*": "babel-jest"
