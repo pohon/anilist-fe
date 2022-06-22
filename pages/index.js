@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { useState } from "react"
 import GridItem from "../components/GridItem"
-import Pagination from "../components/pagination"
+import Pagination from "../components/Pagination"
 import SkeletonLoader from "../components/SkeletonLoader"
 import PAGE_QUERY from "../queries/page.graphql"
 
