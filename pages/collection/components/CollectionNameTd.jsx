@@ -29,8 +29,8 @@ export default function CollectionNameTd({ collection }) {
         }
       </div>
       <div className="ml-4">
-        <div className="text-sm font-medium text-gray-900 capitalize">{collection['name']}</div>
-        <div className="text-sm text-gray-500">{collection['id']}</div>
+        <div className="text-sm font-medium text-gray-900 capitalize">{collection?.['name']}</div>
+        <div className="text-sm text-gray-500">{collection?.['id']}</div>
       </div>
     </div>
   )
