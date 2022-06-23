@@ -1,14 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { useContext } from "react"
 import { useQuery } from "@apollo/client"
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import cn from 'classnames';
 import MEDIA_QUERY from "../../queries/media.graphql"
 import ClientOnly from '../../components/ClientOnly'
-import { ToastContext } from "../../components/Toast"
 import useToggle from '../../hooks/useToggle'
-import ModalCreateCollection from "../../components/ModalCreateCollection"
 import ModalAddToCollection from "../../components/ModalAddToCollection"
 import getLocalCollections from "../../utils/getLocalCollections"
 
@@ -21,37 +18,9 @@ export default function AnimeDetail() {
   const { id } = useRouter().query
   const includedCollections = userCollections?.filter(collection => collection['animeIds'].includes(id)) || /* istanbul ignore next */ []
 
-  // contexes
-  const { showToast } = useContext(ToastContext)
-
   // states
   const [openCollectModal, toggleOpenCollectModal] = useToggle(false)
-  const [openCreateCollectionModal, toggleOpenCreateCollectionModal] = useToggle(false);
   const { data } = useQuery(MEDIA_QUERY, { variables: { id }, skip: !id })
-
-  const handleConfirmCollect = checkedCollectionIds => {
-    const newCollections = getLocalCollections()
-
-    for (let i = 0; i < newCollections.length; i++) {
-
-      const collection = newCollections[i];
-      if (checkedCollectionIds.includes(collection['id'])) {
-
-        // anime doesn't exist in collection --> add anime
-        if (!newCollections[i]?.['animeIds']?.includes(id)) {
-          newCollections[i]?.['animeIds']?.push(id)
-        }
-      }
-    }
-
-    localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))
-
-    // close modal
-    toggleOpenCollectModal()
-
-    // show toast
-    showToast({ message: 'Anime added to collection' })
-  }
 
   return (
     <>
@@ -194,15 +163,11 @@ export default function AnimeDetail() {
       </div>
       <ClientOnly>
         <ModalAddToCollection
-          onConfirmCollect={handleConfirmCollect}
-          onToggleCreateNewCollection={toggleOpenCreateCollectionModal}
           open={openCollectModal}
           setOpen={toggleOpenCollectModal}
+          toBeAddedAnimeIds={[id]}
         />
-        <ModalCreateCollection
-          open={openCreateCollectionModal}
-          setOpen={toggleOpenCreateCollectionModal}
-        />
+        
       </ClientOnly>
     </>
   )
