@@ -8,20 +8,22 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   collectCoverage: true,
   collectCoverageFrom: [
-    "components/*.{js,jsx}",
     "pages/*.{js,jsx}",
     "pages/**/*.{js,jsx}",
     "pages/**/**/*.{js,jsx}",
-    "pages/**/**/**/*.{js,jsx}",
-    "components/*.{js,jsx}"
+    "pages/**/**/**/*.{js,jsx}"
   ],
   coverageReporters: ['html', 'lcov'],
+  coverageThreshold: {
+    "global": {
+      "branches": 90,
+      "functions": 90,
+      "lines": 90,
+      "statements": 90
+    }
+  },
   moduleDirectories: ['node_modules', '<rootDir>/'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/*.mocks.js'
-  ],
   testEnvironment: 'jest-environment-jsdom',
   transform: {
     "\\.(gql|graphql)$": "jest-transform-graphql",

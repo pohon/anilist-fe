@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Head from "next/head"
 import Link from 'next/link'
-import Image from "next/image"
 import { Fragment } from 'react'
 import { Transition, Popover } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
@@ -44,7 +44,7 @@ export default function Header({ isHome }) {
                   <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                     <div className="flex items-center justify-between w-full md:w-auto">
                       <Link href="/">
-                        <Image
+                        <img
                           alt="anilist"
                           className="h-8 w-auto sm:h-10 rounded"
                           height={40}

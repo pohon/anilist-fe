@@ -42,7 +42,7 @@ export const AppBody = ({ Component, pageProps }) => {
   )
 }
 
-const MyApp = ({ Component, pageProps }) => (
+const MyApp = /* istanbul ignore next */ ({ Component, pageProps }) => (
   <ApolloProvider client={client}>
     <AppBody
       Component={Component}

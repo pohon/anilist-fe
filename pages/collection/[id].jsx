@@ -16,7 +16,7 @@ export default function CollectionDetail() {
 
   // local storage
   const currentCollections = getLocalCollections()
-  const collectionDetail = currentCollections.find(collection => collection['id'] === collectionId) || {}
+  const collectionDetail = currentCollections.find(collection => collection['id'] === collectionId) || /* istanbul ignore next */ {}
   const { name, animeIds } = collectionDetail
 
   const [toBeRemovedAnime, setToBeRemovedAnime] = useState({})

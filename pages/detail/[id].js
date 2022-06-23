@@ -19,7 +19,7 @@ export default function AnimeDetail() {
 
   // path param
   const { id } = useRouter().query
-  const includedCollections = userCollections?.filter(collection => collection['animeIds'].includes(id)) || []
+  const includedCollections = userCollections?.filter(collection => collection['animeIds'].includes(id)) || /* istanbul ignore next */ []
 
   // contexes
   const { showToast } = useContext(ToastContext)

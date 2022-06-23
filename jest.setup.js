@@ -1,9 +1,11 @@
-import "@testing-library/jest-dom/extend-expect";
+const observerMock = function () {
+  return {
+    disconnect: jest.fn(),
+    observe: jest.fn(),
+    unobserve: jest.fn()
+  }
+}
 
 window.scrollTo = jest.fn()
-window.IntersectionObserver = jest.fn(() => ({
-  disconnect: jest.fn(),
-  observe: jest.fn(),
-  unobserve: jest.fn()
-}))
+window.IntersectionObserver = observerMock
 global.fetch = jest.fn()

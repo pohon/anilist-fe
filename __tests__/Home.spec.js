@@ -2,7 +2,7 @@ import { render, screen, waitFor, fireEvent, within } from '@testing-library/rea
 import { MockedProvider } from '@apollo/client/testing'
 import '@testing-library/jest-dom'
 import Home from '../pages/index'
-import mocks from '../__mocks__/index'
+import mocks from '../__mocks__/pageQueryGQLMocks'
 
 describe('Home', () => {
   it('should run pagination correctly', async () => {
