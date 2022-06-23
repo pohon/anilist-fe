@@ -4,6 +4,10 @@ import '@testing-library/jest-dom'
 import CollectionList from '../pages/collection/index'
 import { AppBody } from '../pages/_app'
 
+// mocks
+import mocks from '../__mocks__/mediaQueryGQLMocks'
+import hasDataLocalStorageMock from '../__mocks__/hasDataLocalStorageMock'
+
 jest.mock('next/router')
 
 describe('Collection List', () => {
@@ -41,5 +45,17 @@ describe('Collection List', () => {
     });
     fireEvent.click(await within(dialog).getByRole('button', { name: /remove/i }))
     expect(await findByText('Collection successfully deleted')).toBeInTheDocument()
+  })
+
+  it("should display 1st anime's cover as collection's cover", async () => {
+    localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(hasDataLocalStorageMock))
+
+    const { findByRole } = render(
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <AppBody Component={CollectionList} />
+      </MockedProvider >
+    )
+
+    expect(await findByRole('img', { name: /cowboy bebop/i })).toBeInTheDocument()
   })
 })

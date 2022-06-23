@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import '@testing-library/jest-dom'
 import AnimeDetail from '../pages/detail/[id]'
 import { AppBody } from '../pages/_app'
-import mocks from '../__mocks__/AnimeDetail'
+import mocks from '../__mocks__/mediaQueryGQLMocks'
 import getLocalCollections from '../utils/getLocalCollections'
 
 jest.mock('next/router')
