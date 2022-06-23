@@ -13,6 +13,7 @@ export default function GridItem({ checked, media, onCheck, selectBulkMode }) {
       {
         selectBulkMode && (
           <input
+            data-testid={`anime-bulk-checkbox-${media.id}`}
             type="checkbox"
             defaultChecked={checked}
             className="

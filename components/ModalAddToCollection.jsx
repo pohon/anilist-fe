@@ -42,7 +42,7 @@ export default function ModalAddToCollection({
     setCheckedCollectionIds([])
 
     // call parent on success
-    onSuccess()
+    onSuccess && onSuccess()
   };
   const handleCheckboxChange = evt => {
     setCheckedCollectionIds(current => {
