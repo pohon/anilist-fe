@@ -156,12 +156,14 @@ export default function CollectionList() {
         onClose={() => setToBeRemovedCollection({})}
       />
 
+      {/* create modal */}
       <ModalUpsertCollection
         open={openCreateCollectionModal}
         onSuccess={handleSuccessCreate}
         setOpen={toggleOpenCreateCollectionModal}
       />
 
+      {/* update modal */}
       <ModalUpsertCollection
         collectionId={toBeUpdatedCollectionId}
         open={!!toBeUpdatedCollectionId}

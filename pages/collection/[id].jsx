@@ -2,9 +2,11 @@
 import { useRouter } from 'next/router'
 import { useContext, useState } from 'react'
 import { ToastContext } from '../../components/Toast'
+import ModalUpsertCollection from '../../components/ModalUpsertCollection'
 import getLocalCollections from '../../utils/getLocalCollections'
 import AnimeCard from './components/AnimeCard'
 import RemoveAnimeModal from './components/RemoveAnimeModal'
+import useToggle from '../../hooks/useToggle'
 
 export default function CollectionDetail() {
 
@@ -19,7 +21,9 @@ export default function CollectionDetail() {
   const collectionDetail = currentCollections.find(collection => collection['id'] === collectionId) || /* istanbul ignore next */ {}
   const { name, animeIds } = collectionDetail
 
+  // states
   const [toBeRemovedAnime, setToBeRemovedAnime] = useState({})
+  const [showUpdateModal, toggleShowUpdateModal] = useToggle(false)
 
   // handlers
   const handleToggleRemoveAnime = animeData => {
@@ -53,6 +57,9 @@ export default function CollectionDetail() {
   const handleResetRemoveAnime = () => {
     setToBeRemovedAnime({})
   }
+  const handleSuccessUpdate = () => {
+    showToast({ message: 'Collection successfully updated' });
+  }
 
   return (
     <>
@@ -61,6 +68,13 @@ export default function CollectionDetail() {
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             <span className="block">{name}</span>
           </h2>
+          <button
+            type="button"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            onClick={toggleShowUpdateModal}
+          >
+            Edit collection
+          </button>
         </div>
 
         <div className="max-w-7xl mx-auto pb-12 sm:px-6 lg:px-8">
@@ -92,6 +106,13 @@ export default function CollectionDetail() {
         collection={collectionDetail}
         onConfirm={handleConfirmRemoveAnime}
         onClose={handleResetRemoveAnime}
+      />
+
+      <ModalUpsertCollection
+        collectionId={collectionId}
+        open={showUpdateModal}
+        onSuccess={handleSuccessUpdate}
+        setOpen={toggleShowUpdateModal}
       />
     </>
   )
