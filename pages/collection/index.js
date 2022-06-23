@@ -5,8 +5,9 @@ import CollectionNameTd from "./components/CollectionNameTd"
 import RemoveCollectionModal from "./components/RemoveCollectionModal"
 import { useContext, useState } from "react"
 import { ToastContext } from '../../components/Toast'
-import ModalCreateCollection from '../../components/ModalCreateCollection'
+import ModalUpsertCollection from '../../components/ModalUpsertCollection'
 import useToggle from '../../hooks/useToggle'
+
 export const columns = [{
   header: 'No',
   field: 'no'
@@ -31,6 +32,7 @@ export default function CollectionList() {
 
   // states
   const [toBeRemovedCollection, setToBeRemovedCollection] = useState({})
+  const [toBeUpdatedCollectionId, setToBeUpdatedCollectionId] = useState('')
   const [openCreateCollectionModal, toggleOpenCreateCollectionModal] = useToggle(false)
 
   // handlers
@@ -38,6 +40,10 @@ export default function CollectionList() {
     evt.stopPropagation()
     setToBeRemovedCollection({ ...collection })
   }
+  const handleToggleUpdate = collectionId => evt => {
+    evt.stopPropagation()
+    setToBeUpdatedCollectionId(collectionId)
+  };
   const handleConfirmRemove = () => {
     const currentCollections = getLocalCollections()
 
@@ -51,6 +57,12 @@ export default function CollectionList() {
   }
   const handleSuccessCreate = () => {
     showToast({ message: 'New collection successfully created' });
+  }
+  const handleCloseUpdateCollectionModal = () => {
+    setToBeUpdatedCollectionId('')
+  };
+  const handleSuccessUpdate = () => {
+    showToast({ message: 'Collection successfully updated' });
   }
 
   return (
@@ -114,6 +126,12 @@ export default function CollectionList() {
                                   className="text-red-600 hover:text-red-900 cursor-pointer text-sm font-medium">
                                   Remove
                                 </button>
+
+                                <button
+                                  onClick={handleToggleUpdate(collection.id)}
+                                  className="text-sky-600 hover:text-red-900 cursor-pointer text-sm font-medium pl-3">
+                                  Edit
+                                </button>
                               </td>
                             </tr>
                           </Link>
@@ -138,10 +156,17 @@ export default function CollectionList() {
         onClose={() => setToBeRemovedCollection({})}
       />
 
-      <ModalCreateCollection
+      <ModalUpsertCollection
         open={openCreateCollectionModal}
         onSuccess={handleSuccessCreate}
         setOpen={toggleOpenCreateCollectionModal}
+      />
+
+      <ModalUpsertCollection
+        collectionId={toBeUpdatedCollectionId}
+        open={!!toBeUpdatedCollectionId}
+        onSuccess={handleSuccessUpdate}
+        setOpen={handleCloseUpdateCollectionModal}
       />
     </div>
   )

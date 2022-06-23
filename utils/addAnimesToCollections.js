@@ -13,6 +13,8 @@ const addAnimesToCollections = (animeIds, collectionIds) => {
         'animeIds': collection.animeIds.concat(newAnimeIds)
       })
     }
+
+    return collection
   })
 
   localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))

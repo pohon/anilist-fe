@@ -34,7 +34,7 @@ describe('AnimeDetail', () => {
     fireEvent.click(await findByRole('button', { name: /create collection/i }))
     expect(await findByText("Create new collection")).toBeInTheDocument()
 
-    // move to ModalCreateCollection.spec.jsx later
+    // move to ModalUpsertCollection.spec.jsx later
     fireEvent.change(await findByRole('textbox'), {
       target: {
         value: 's0me!*(~'
@@ -43,7 +43,7 @@ describe('AnimeDetail', () => {
     fireEvent.click(await findByText("Create"))
     expect(await findByText("Collection musn't contain special char!")).toBeInTheDocument()
 
-    // move to ModalCreateCollection.spec.jsx later
+    // move to ModalUpsertCollection.spec.jsx later
     fireEvent.change(await findByRole('textbox'), {
       target: {
         value: ''

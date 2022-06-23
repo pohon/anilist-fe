@@ -3,14 +3,22 @@ import { ViewGridAddIcon } from '@heroicons/react/outline'
 import Modal from "./Modal"
 import getLocalCollections from '../utils/getLocalCollections'
 
-export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
+export default function ModalUpsertCollection({
+  open,
+  onSuccess,
+  setOpen,
+  collectionId
+}) {
+
+  // props
+  const isCreate = !collectionId
 
   // states
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState('')
 
   // handlers
-  const handleCreateNewCollection = () => {
+  const handleSubmit = () => {
 
     if (!inputValue) {
       setError('Collection name must not empty!')
@@ -34,13 +42,25 @@ export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
       return
     }
 
-    const newCollections = [
+    const newCollections = isCreate ? [
       ...currentCollections,
       {
         'id': String(Date.now()),
         'name': inputValue,
         'animeIds': []
-      }]
+      }] : currentCollections.map(current => {
+
+        if (current['id'] === collectionId) {
+
+          return {
+            ...current,
+            'name': inputValue
+          }
+        }
+
+        return current
+      })
+
 
     localStorage.setItem("MY_ANI_COLLECTION", JSON.stringify(newCollections))
     
@@ -59,7 +79,7 @@ export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
 
   // effects
   useEffect(() => {
-    // remove error text in 1 seconds
+    // remove error text in 1 second
     if (error) {
       setTimeout(() => setError(''), 1000)
     }
@@ -67,15 +87,15 @@ export default function ModalCreateCollection({ open, onSuccess, setOpen }) {
 
   return (
     <Modal
-      description="Please select a new collection name"
+      description={"Please input new collection name"}
       Icon={ViewGridAddIcon}
       onChange={setOpen}
-      onPrimaryButtonClick={handleCreateNewCollection}
+      onPrimaryButtonClick={handleSubmit}
       onSecondaryButtonClick={setOpen}
       open={open}
-      primaryButtonText="Create"
+      primaryButtonText={isCreate ? "Create" : 'Update'}
       secondaryButtonText="Cancel"
-      title="Create new collection"
+      title={isCreate ? "Create new collection" : 'Update collection'}
     >
       <div className="px-4">
         <input

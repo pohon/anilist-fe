@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import getLocalCollections from '../utils/getLocalCollections';
 import addAnimesToCollections from '../utils/addAnimesToCollections';
 import { ToastContext } from './Toast';
-import ModalCreateCollection from './ModalCreateCollection';
+import ModalUpsertCollection from './ModalUpsertCollection';
 import useToggle from '../hooks/useToggle';
 
 const DEFAULT_CHECKED_COLLECTION_IDS = []
@@ -112,7 +112,7 @@ export default function ModalAddToCollection({
         }
       </Modal>
 
-      <ModalCreateCollection
+      <ModalUpsertCollection
         open={openCreateCollectionModal}
         setOpen={toggleOpenCreateCollectionModal}
       />
